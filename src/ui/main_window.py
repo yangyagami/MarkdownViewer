@@ -1,6 +1,8 @@
 """Application main window.
 """
 
+import os
+
 from PySide6 import QtWidgets
 from PySide6 import QtWebEngineCore, QtWebEngineWidgets
 from PySide6 import QtCore
@@ -41,17 +43,22 @@ class MainWindow(QtWidgets.QWidget):
 
         self.setMinimumSize(800, 600)
 
-        self._web_engine_page = QtWebEngineCore.QWebEnginePage()
-        self._web_engine_page.setUrl(
-            QtCore.QUrl.fromLocalFile(
-                QtCore.QDir.currentPath() + '/res/index.html'
-            )
-        )
+        file_handler = QtCore.QFile(':/index.html')
+        html_text = ''
+        if (file_handler.open(QtCore.QIODevice.ReadOnly) == True):
+            stream = QtCore.QTextStream(file_handler)
+            html_text = stream.readAll()
 
         self._web_engine_view = QtWebEngineWidgets.QWebEngineView(self)
-        self._web_engine_view.setPage(self._web_engine_page)
+        self._web_engine_page = QtWebEngineCore.QWebEnginePage()
 
         self._set_web_engine()
+        self._web_engine_page.setHtml(
+            html_text,
+            QtCore.QUrl.fromLocalFile(os.getcwd()+os.path.sep)
+        )
+
+        self._web_engine_view.setPage(self._web_engine_page)
 
         self._layout = QtWidgets.QHBoxLayout()
         self.setLayout(self._layout)
