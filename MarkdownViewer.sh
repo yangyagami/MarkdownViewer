@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-python src/main.py $1
+basedir=$(dirname "$0")
+source $basedir/env/bin/activate
+python $basedir/src/main.py $1
