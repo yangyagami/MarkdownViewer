@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
     <file>index.html</file>
+    <file>github-markdown-css/github-markdown.css</file>
 </qresource>
 </RCC>

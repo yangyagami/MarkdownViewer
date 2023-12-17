@@ -15,7 +15,7 @@ def main():
     """
 
     app = QtWidgets.QApplication(sys.argv)
-    window = main_window.MainWindow()
+    window = main_window.MainWindow(sys.argv)
     window.show()
 
     sys.exit(app.exec())

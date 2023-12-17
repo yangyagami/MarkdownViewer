@@ -1,0 +1,3 @@
+[submodule "res/github-markdown-css"]
+	path = res/github-markdown-css
+	url = https://github.com/sindresorhus/github-markdown-css.git

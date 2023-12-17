@@ -12,7 +12,7 @@ class MainWindow(QtWidgets.QWidget):
     """MainWindow class.
     """
 
-    def __init__(self):
+    def __init__(self, argv):
         super().__init__()
 
         self.setMinimumSize(800, 600)
@@ -27,5 +27,4 @@ class MainWindow(QtWidgets.QWidget):
         self.setLayout(self._layout)
         self._layout.addWidget(self._web_engine_view)
 
-        self._document = markdown_document.MarkdownDocument()
-        self._web_engine_page.setWebChannel(self._document.channel)
+        self._document_controller = markdown_document.MarkdownDocumentController(self._web_engine_page, argv)
