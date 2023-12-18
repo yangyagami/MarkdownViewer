@@ -1,6 +1,8 @@
 """Markdown document controller.
 """
 
+import os
+
 from PySide6 import QtWebChannel
 from PySide6 import QtCore
 
@@ -49,6 +51,31 @@ class MarkdownDocumentController(QtCore.QObject):
     """MarkdownDocumentController parse argv and set document.
     """
 
+    def _read_file_content(self, file_path) -> str:
+        """Read file's text content.
+        """
+        file_handler = open(file_path, 'r')
+        file_content = file_handler.read()
+        file_handler.close()
+
+        return file_content
+
+    @QtCore.Slot(str)
+    def _on_file_changed(self, file_path):
+        """File changed slot
+        """
+        file_content = self._read_file_content(file_path)
+        self._document.set_text(file_content)
+
+    def _set_file_watcher(self, file_path):
+        """Set file watcher.
+
+        If file changed. The document will be updated.
+        """
+        self._file_watcher = QtCore.QFileSystemWatcher(self)
+        self._file_watcher.addPath(file_path)
+        self._file_watcher.fileChanged.connect(self._on_file_changed)
+
     def _parse_argv(self, argv) -> str:
         """Parse argv.
 
@@ -62,11 +89,8 @@ class MarkdownDocumentController(QtCore.QObject):
         if len(argv) <= 1:
             return ''
         file_path = argv[1]
-        file_handler = open(file_path, 'r')
-        file_content = file_handler.read()
-        file_handler.close()
 
-        return file_content
+        return file_path
 
     def _set_web_channel(self, web_page):
         """Set channel for web page.
@@ -79,6 +103,8 @@ class MarkdownDocumentController(QtCore.QObject):
         self._document = _MarkdownDocument()
         self._set_web_channel(web_page)
 
-        content = self._parse_argv(argv)
+        file_path = self._parse_argv(argv)
+        content = self._read_file_content(file_path)
+        self._set_file_watcher(file_path)
         self._document.set_text(content)
 
