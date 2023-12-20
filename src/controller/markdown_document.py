@@ -54,9 +54,9 @@ class MarkdownDocumentController(QtCore.QObject):
     def _read_file_content(self, file_path) -> str:
         """Read file's text content.
         """
-        file_handler = open(file_path, 'r')
-        file_content = file_handler.read()
-        file_handler.close()
+        file_content = ''
+        with open(file_path, 'r') as file_handler:
+            file_content = file_handler.read()
 
         return file_content
 
