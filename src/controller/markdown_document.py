@@ -66,6 +66,7 @@ class MarkdownDocumentController(QtCore.QObject):
         """
         file_content = self._read_file_content(file_path)
         self._document.set_text(file_content)
+        self._file_watcher.addPath(file_path)
 
     def _set_file_watcher(self, file_path):
         """Set file watcher.
@@ -104,7 +105,7 @@ class MarkdownDocumentController(QtCore.QObject):
         self._set_web_channel(web_page)
 
         file_path = self._parse_argv(argv)
-        content = self._read_file_content(file_path)
         self._set_file_watcher(file_path)
+        content = self._read_file_content(file_path)
         self._document.set_text(content)
 
